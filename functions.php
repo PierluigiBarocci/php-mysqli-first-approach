@@ -8,7 +8,7 @@ function connection_db() {
     return new mysqli($servername, $username, $password, $dbname);
 };
 
-function recupera_stanze() {
+function recupera_ospiti() {
     // Connettiti
     $conn = connection_db();
 
@@ -23,7 +23,7 @@ function recupera_stanze() {
     };
 
     // Crea la query
-    $sql = "SELECT id, room_number, floor FROM stanze";
+    $sql = "SELECT id, name, lastname FROM ospiti";
 
     // Leggi la query e assegna l'oggetto a $result
     $result = $conn->query($sql);
@@ -35,7 +35,7 @@ function recupera_stanze() {
     return $result;
 };
 
-function recupera_dettagli_stanza($id_stanza) {
+function recupera_dettagli_ospite($id_ospite) {
     // Connettiti
     $conn = connection_db();
 
@@ -49,7 +49,7 @@ function recupera_dettagli_stanza($id_stanza) {
         }
     };
     // Crea la query
-    $sql = "SELECT * FROM stanze WHERE id = " . $id_stanza;
+    $sql = "SELECT * FROM ospiti WHERE id = " . $id_ospite;
 
     // Leggi la query e assegna l'oggetto a $result
     $result = $conn->query($sql);
