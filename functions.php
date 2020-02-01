@@ -2,20 +2,17 @@
 
 function connection_db() {
     // includi le variabili di configurazione da db_config
-    // perchè mi servono qui
     include 'db_config.php';
-    // connessione
-    // $conn è un nuovo oggetto che rappresenta la mia connessione
-    // come si crea? invocando il costruttore mysqli tramite new
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    return $conn;
+
+    // Restituisci un oggetto che rappresenti la connessione
+    return new mysqli($servername, $username, $password, $dbname);
 };
 
-function recupera_prenotazioni() {
+function recupera_stanze() {
+    // Connettiti
     $conn = connection_db();
 
-    // controllo connessione
-    // se conn è stato creato E ci sono errori di connessione
+    // Controlla Connessione
     if (!$conn || ($conn && $conn->connect_error)) {
         if ($conn && $conn->connect_error) {
             echo ("Connessione fallita:" . $conn->connect_error);
@@ -25,17 +22,42 @@ function recupera_prenotazioni() {
         }
     };
 
-    // creo la query
-    $sql = "SELECT prenotazioni_has_ospiti.id,prenotazioni.created_at, stanze.room_number, ospiti.name, ospiti.lastname, ospiti.date_of_birth, ospiti.document_type, ospiti.document_number FROM prenotazioni_has_ospiti JOIN prenotazioni ON prenotazioni_has_ospiti.id = prenotazioni.id JOIN stanze ON prenotazioni.stanza_id = stanze.id JOIN ospiti ON prenotazioni_has_ospiti.ospite_id = ospiti.id ORDER BY prenotazioni_has_ospiti.id ASC";
+    // Crea la query
+    $sql = "SELECT id, room_number, floor FROM stanze";
 
-    // applico la query $sql al mio oggetto connessione, tramite la funzione ->query
-    // mi restituisce un oggetto che dovrò manipolare
-
+    // Leggi la query e assegna l'oggetto a $result
     $result = $conn->query($sql);
 
-    // chiudi la Connessione
+    // Chiudi la Connessione
     $conn->close();
 
+    // Restituisci il risultato
     return $result;
-}
+};
+
+function recupera_dettagli_stanza($id_stanza) {
+    // Connettiti
+    $conn = connection_db();
+
+    // Controlla Connessione
+    if (!$conn || ($conn && $conn->connect_error)) {
+        if ($conn && $conn->connect_error) {
+            echo ("Connessione fallita:" . $conn->connect_error);
+            // chiudi lo script se c'è un errore,
+            // non c'è bisogno di andare avanti
+            return;
+        }
+    };
+    // Crea la query
+    $sql = "SELECT * FROM stanze WHERE id = " . $id_stanza;
+
+    // Leggi la query e assegna l'oggetto a $result
+    $result = $conn->query($sql);
+
+    // Chiudi la Connessione
+    $conn->close();
+
+    // Restituisci il risultato
+    return $result;
+};
 ?>
