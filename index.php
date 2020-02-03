@@ -37,6 +37,7 @@
                                     <td><?php echo $row['floor']; ?></td>
                                     <td>
                                         <a class="btn btn-primary" href="details.php?id_stanza=<?php echo $row['id']; ?>">Dettagli</a>
+                                        <a class="btn btn-danger" href="delete.php?id_stanza=<?php echo $row['id']; ?>">Cancella</a>
                                     </td>
                                 </tr> <?php
                             }
